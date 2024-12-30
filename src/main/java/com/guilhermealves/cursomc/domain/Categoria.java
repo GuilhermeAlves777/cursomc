@@ -2,7 +2,13 @@ package com.guilhermealves.cursomc.domain;
 
 import java.io.Serializable;
 import java.util.Objects;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
+//Indicação que a classe vai ser uma entidade do JPA  
+@Entity
 //Serializable serve para a conversão dos dados para Bytes, para os objetos poderem ser gravados em arquivos e trafegar na rede
 public class Categoria implements Serializable{
 	
@@ -10,6 +16,11 @@ public class Categoria implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	//Definição da definição automática dos IDs
+	@Id
+	@GeneratedValue (strategy=GenerationType.IDENTITY)
+	
 	//Declarando os atributos
 	private Integer id;
 	private String nome;
