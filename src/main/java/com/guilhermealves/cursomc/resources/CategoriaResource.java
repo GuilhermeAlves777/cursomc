@@ -1,33 +1,30 @@
 package com.guilhermealves.cursomc.resources;
-import java.util.ArrayList;
-import java.util.List;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import com.guilhermealves.cursomc.domain.Categoria;
+import com.guilhermealves.cursomc.services.CategoriaService;
 
 @RestController
 @RequestMapping(value="/categorias")
 public class CategoriaResource {
-	
-	//Associação com um verbo do HTTP para busca de dados
-	@GetMapping
-	
-	
-	public List<Categoria> listar() {
-		
-		//Instância dos objetos
-		Categoria cat1 = new Categoria(1, "Informática");
-		Categoria cat2 = new Categoria(2, "Escritório");
-		
-		//Criação do Lista com os onjetos instanciados
-		List<Categoria> lista = new ArrayList<>();
-		lista.add(cat1);
-		lista.add(cat2);
-		
-		// Verificação se o REST está funcionando
-		return lista;
-	}
-	
+    
+    @Autowired
+    private CategoriaService service;
+
+    // Método para buscar uma categoria por ID
+    @GetMapping("/{id}")
+    public ResponseEntity<?> find(@PathVariable Integer id) {
+        Categoria obj = service.buscar(id);
+        return obj != null ? ResponseEntity.ok().body(obj) : ResponseEntity.notFound().build();
+    }
+
+    // Método para salvar uma nova categoria
+    @PostMapping
+    public ResponseEntity<Categoria> save(@RequestBody Categoria categoria) {
+        Categoria obj = service.salvar(categoria); // Salva a categoria
+        return ResponseEntity.ok().body(obj); // Retorna a categoria salva
+    }
 }
