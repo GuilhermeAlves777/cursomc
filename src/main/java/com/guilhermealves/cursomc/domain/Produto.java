@@ -9,38 +9,35 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 
-//Indicação que a classe vai ser uma entidade do JPA  
 @Entity
-//Serializable serve para a conversão dos dados para Bytes, para os objetos poderem ser gravados em arquivos e trafegar na rede
-public class Categoria implements Serializable{
-	
-	/**
-	 * 
-	 */
+public class Produto implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
-	//Definição da definição automática dos IDs
 	@Id
 	@GeneratedValue (strategy=GenerationType.IDENTITY)
-	
-	//Declarando os atributos
 	private Integer id;
 	private String nome;
+	private Double preco;
 	
-	@ManyToMany(mappedBy = "categorias")
-	private List<Produto> produtos = new ArrayList<Produto>();
+	@ManyToMany
+	@JoinTable(name = "PRODUTO_CATEGORIA", joinColumns = @JoinColumn (name = "produto_id"), 
+	inverseJoinColumns = @JoinColumn (name = "categoria_id"))
 	
-	//Declarando a classe construtora (para a instância de objetos)
-	public Categoria() {
+	private List<Categoria> categorias = new ArrayList<Categoria>();
+	
+	public Produto() {
 		
 	}
 
-	public Categoria(Integer id, String nome) {
+	public Produto(Integer id, String nome, Double preco) {
 		super();
 		this.id = id;
 		this.nome = nome;
+		this.preco = preco;
 	}
 
 	public Integer getId() {
@@ -58,8 +55,23 @@ public class Categoria implements Serializable{
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
-	//hashcode e equals: Para que o objetos dos aributos sejam comparados pelo seu valor
+
+	public Double getPreco() {
+		return preco;
+	}
+
+	public void setPreco(Double preco) {
+		this.preco = preco;
+	}
+
+	public List<Categoria> getCategorias() {
+		return categorias;
+	}
+
+	public void setCategorias(List<Categoria> categorias) {
+		this.categorias = categorias;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -73,18 +85,9 @@ public class Categoria implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Categoria other = (Categoria) obj;
+		Produto other = (Produto) obj;
 		return Objects.equals(id, other.id);
 	}
-
-	public List<Produto> getProdutos() {
-		return produtos;
-	}
-
-	public void setProdutos(List<Produto> produtos) {
-		this.produtos = produtos;
-	}
-	
 	
 	
 }
