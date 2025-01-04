@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,7 +32,8 @@ public class Categoria implements Serializable{
 	private Integer id;
 	private String nome;
 	
-	@ManyToMany(mappedBy = "categorias")
+	@JsonManagedReference
+	@ManyToMany(mappedBy = "categorias", fetch = FetchType.EAGER)
 	private List<Produto> produtos = new ArrayList<Produto>();
 	
 	//Declarando a classe construtora (para a instância de objetos)
